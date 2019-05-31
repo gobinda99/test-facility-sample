@@ -15,6 +15,7 @@ import com.gobinda.facilities.data.api.Facility
 import com.gobinda.facilities.di.ActivityScope
 import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.adapter.NavAdapter
+import com.gobinda.facilities.ui.adapter.OptionsAdapter
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.frag_navigation.*
@@ -23,7 +24,7 @@ import java.util.ArrayList
 import javax.inject.Inject
 
 @ActivityScope
-class NavFragment @Inject constructor() : Fragment() {
+class OptionsFragment @Inject constructor() : Fragment() {
 
     @Inject
     lateinit var factory : ViewModelProviderFactory
@@ -32,13 +33,9 @@ class NavFragment @Inject constructor() : Fragment() {
         ViewModelProviders.of(activity!!, factory).get(FacilitiesViewModel::class.java)
     }
 
-    val callback : NavItemCallback by lazy { context as NavItemCallback}
-
-    val navAdapter = NavAdapter(
+    val navAdapter = OptionsAdapter(
         ArrayList(0),
-        { callback.onItemClick(it.facilityId!!, true)
-            Timber.d(it.name) })
-
+        { Timber.d(it.name) })
 
     override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
@@ -51,7 +48,7 @@ class NavFragment @Inject constructor() : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.frag_navigation, container, false)
+        return inflater.inflate(R.layout.frag_option, container, false)
 
     }
 
@@ -62,11 +59,9 @@ class NavFragment @Inject constructor() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        model.mutableLiveData.observe(this, Observer {
-            navAdapter.addItem(it,true)
-//            if(!it.isNullOrEmpty()) {
-//                callback.onItemClick(it[0].facilityId!!, false)
-//            }
+        model.getOption(arguments!!.getString(FACILITY_ID))
+        model.optionMutableLiveData.observe(this, Observer {
+            navAdapter.addItem(it)
         })
     }
 
@@ -93,8 +88,15 @@ class NavFragment @Inject constructor() : Fragment() {
 
     }
 
-    interface NavItemCallback{
-        fun onItemClick(facilityId : String, closeNav : Boolean)
+    companion object {
+
+        const val FACILITY_ID = "facility_id"
+
+        fun newInstance(facilityId: String) = OptionsFragment().apply {
+            arguments = Bundle().apply {
+                putString(FACILITY_ID, facilityId)
+            }
+        }
     }
 
 }

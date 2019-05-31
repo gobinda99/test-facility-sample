@@ -3,17 +3,20 @@ package com.gobinda.facilities
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.BaseFragmentActivity
 import com.gobinda.facilities.ui.FacilitiesViewModel
+import com.gobinda.facilities.ui.NavFragment
+import com.gobinda.facilities.ui.OptionsFragment
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseFragmentActivity() {
+class MainActivity : BaseFragmentActivity() , NavFragment.NavItemCallback {
 
     @Inject
     lateinit var factory : ViewModelProviderFactory
@@ -39,5 +42,18 @@ class MainActivity : BaseFragmentActivity() {
 
     }
 
+    override fun onBackPressed() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
+    override fun onItemClick(facilityId: String, closeNav: Boolean) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container, OptionsFragment.newInstance(facilityId)).commit()
+       if(closeNav)
+        drawer_layout.closeDrawer(GravityCompat.START)
+    }
 }

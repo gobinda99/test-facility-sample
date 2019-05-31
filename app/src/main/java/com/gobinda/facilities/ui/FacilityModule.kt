@@ -10,4 +10,8 @@ abstract class FacilityModule {
     @FragmentScope
     @ContributesAndroidInjector
     internal abstract fun navFragment(): NavFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector
+    internal abstract fun optionFragment(): OptionsFragment
 }
