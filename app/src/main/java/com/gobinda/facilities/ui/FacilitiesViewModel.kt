@@ -54,17 +54,19 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
             it.facilityId == facilityId
         }?.firstOrNull()?.options
 
-        options!!.forEach {
+        options?.forEach lit@{
             option ->
             option.disabled = false
             if(!option.selected)
-            exclusions!!.forEach { list1 ->
+            exclusions?.forEach { list1 ->
                 sec.forEach { sec ->
                     list1!!.forEach {
                         if(it.facilityId == sec.facilityId && it.optionsId == sec.optionsId){
                            list1.filter { !(it.facilityId == sec.facilityId) }.forEach {
-                               if(it.facilityId == facilityId && it.optionsId == option.id )
+                               if(it.facilityId == facilityId && it.optionsId == option.id ) {
                                    option.disabled = true;
+                                   return@lit
+                               }
                            }
                         }
                     }
