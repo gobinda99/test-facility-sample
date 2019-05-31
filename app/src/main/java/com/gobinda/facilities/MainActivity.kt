@@ -51,8 +51,11 @@ class MainActivity : BaseFragmentActivity() , NavFragment.NavItemCallback {
     }
 
     override fun onItemClick(facilityId: String, closeNav: Boolean) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, OptionsFragment.newInstance(facilityId)).commit()
+        if (!isFinishing() && !isDestroyed()) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, OptionsFragment.newInstance(facilityId)).commit()
+        }
+
        if(closeNav)
         drawer_layout.closeDrawer(GravityCompat.START)
     }

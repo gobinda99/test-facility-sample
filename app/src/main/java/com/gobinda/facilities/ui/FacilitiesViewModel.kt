@@ -37,14 +37,46 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
     }
 
     fun getOption(facilityId : String ){
-       optionMutableLiveData.value = mutableLiveData.value?.filter {
+
+        val sec: MutableList<Exclusions> = mutableListOf()
+
+        mutableLiveData.value?.map { f ->
+            f.options.map { o ->
+                if (o.selected) {
+                    sec.add(Exclusions(f.facilityId!!, o.id))
+                    Timber.d(" ttt  " + f.facilityId+"    " + o.id +" "+o.name)
+                }
+
+            }
+        }
+
+        val options =  mutableLiveData.value?.filter {
             it.facilityId == facilityId
         }?.firstOrNull()?.options
+
+        options!!.forEach {
+            option ->
+            option.disabled = false
+            if(!option.selected)
+            exclusions!!.forEach { list1 ->
+                sec.forEach { sec ->
+                    list1!!.forEach {
+                        if(it.facilityId == sec.facilityId && it.optionsId == sec.optionsId){
+                           list1.filter { !(it.facilityId == sec.facilityId) }.forEach {
+                               if(it.facilityId == facilityId && it.optionsId == option.id )
+                                   option.disabled = true;
+                           }
+                        }
+                    }
+                }
+
+            }
+        }
+        optionMutableLiveData.value = options
+
     }
 
-//    fun optionSelected(facilityId: String, optionId: String) {
-//        exclusions.filter { it?.filter { it.facilityId == facilityId && it.optionsId == optionId } }
-//    }
+
 
 
 }

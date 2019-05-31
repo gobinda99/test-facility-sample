@@ -58,7 +58,6 @@ class OptionsAdapter(
         }
 
         fun bind(option: Option) {
-            Timber.d(" FF ")
             with(option) {
                 text_nav.text = option.name
                 if(selected) {
@@ -69,8 +68,10 @@ class OptionsAdapter(
                     text_nav.setTextColor(Color.BLACK)
                 }
                 itemView.setOnClickListener {
-                    itemClick(this)
-                    refreshTheItem(option)
+                    if(!disabled) {
+                        itemClick(this)
+                        refreshTheItem(option)
+                    }
                 }
             }
         }

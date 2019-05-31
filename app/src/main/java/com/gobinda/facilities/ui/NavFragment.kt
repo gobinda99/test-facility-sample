@@ -45,10 +45,6 @@ class NavFragment @Inject constructor() : Fragment() {
         super.onAttach(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.frag_navigation, container, false)
@@ -72,11 +68,11 @@ class NavFragment @Inject constructor() : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val list = listOf<Facility>( Facility(name = "a"),
-            Facility(name = "a"),Facility(name = "a"),
-                Facility(name = "a"),Facility(name = "a"),
-            Facility(name = "a"),Facility(name = "a"),Facility(name = "a"),
-            Facility(name = "a"))
+//        val list = listOf<Facility>( Facility(name = "a"),
+//            Facility(name = "a"),Facility(name = "a"),
+//                Facility(name = "a"),Facility(name = "a"),
+//            Facility(name = "a"),Facility(name = "a"),Facility(name = "a"),
+//            Facility(name = "a"))
     }
 
 

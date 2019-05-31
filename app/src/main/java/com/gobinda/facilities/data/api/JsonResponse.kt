@@ -8,7 +8,7 @@ data class JsonResponse(
 data class Facility(
     val facilityId: String? = null,
     val name: String,
-    val options: List<Option>? = null,
+    val options: List<Option>,
     @Transient
     var selected : Boolean = false
 )
