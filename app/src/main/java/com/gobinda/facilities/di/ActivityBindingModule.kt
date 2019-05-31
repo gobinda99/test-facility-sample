@@ -1,6 +1,7 @@
 package com.gobinda.facilities.di
 
 import com.gobinda.facilities.MainActivity
+import com.gobinda.facilities.ui.FacilityModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -13,13 +14,13 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBindingModule {
 
-//    @ActivityScope
-//    @ContributesAndroidInjector(modules = arrayOf(NewsModule::class))
-//    internal abstract fun nyMainActivity(): NYNewsMainActivity
-
     @ActivityScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [FacilityModule::class])
     internal abstract fun nyMainActivity(): MainActivity
+
+//    @ActivityScope
+//    @ContributesAndroidInjector
+//    internal abstract fun nyMainActivity(): MainActivity
 
 
 }

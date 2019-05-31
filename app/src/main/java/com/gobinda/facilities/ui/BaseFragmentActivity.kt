@@ -1,23 +1,27 @@
-//package com.gobinda.facilities.ui
-//
-//import android.app.Activity
-//import android.app.Fragment
-//import android.os.Bundle
-//import androidx.fragment.app.FragmentActivity
-//import dagger.android.*
-//import java.util.*
-//import javax.inject.Inject
-//
-//abstract class BaseFragmentActivity : (), HasFragmentInjector {
-//
-//    @Inject
-//    lateinit var fragmentInjector : DispatchingAndroidInjector<Fragment>
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        AndroidInjection.inject(this)
-//        super.onCreate(savedInstanceState)
-//    }
-//
-//    override fun fragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
-//
-//}
+package com.gobinda.facilities.ui
+
+
+import javax.inject.Inject
+
+import android.app.Activity
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import dagger.android.*
+import dagger.android.support.HasSupportFragmentInjector
+import java.util.*
+
+abstract class BaseFragmentActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var fragmentInjector : DispatchingAndroidInjector<Fragment>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
+
+}
