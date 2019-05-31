@@ -6,9 +6,9 @@ data class JsonResponse(
 )
 
 data class Facility(
-    val facilityId: String,
+    val facilityId: String? = null,
     val name: String,
-    val options: List<Option>
+    val options: List<Option>? = null
 )
 
 data class Option(
