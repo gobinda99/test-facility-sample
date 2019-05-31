@@ -8,14 +8,21 @@ data class JsonResponse(
 data class Facility(
     val facilityId: String? = null,
     val name: String,
-    val options: List<Option>? = null
+    val options: List<Option>? = null,
+    @Transient
+    var selected : Boolean = false
 )
 
 data class Option(
     val id: String,
     val name: String,
-    val icon: String
+    val icon: String,
+    @Transient
+    var selected : Boolean = false,
+    @Transient
+    var disabled : Boolean = false
 )
+
 
 data class Exclusions(
     val facilityId: String,

@@ -1,5 +1,6 @@
 package com.gobinda.facilities.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,14 +57,34 @@ class OptionsAdapter(
 //            rightIcon.toIcon(R.string.fa_angle_right)
         }
 
-        fun bind(facility: Option) {
+        fun bind(option: Option) {
             Timber.d(" FF ")
-            with(facility) {
-                text_nav.text = facility.name
-                itemView.setOnClickListener { itemClick(this) }
+            with(option) {
+                text_nav.text = option.name
+                if(selected) {
+                    text_nav.setTextColor(Color.RED)
+                }else if(disabled) {
+                    text_nav.setTextColor(Color.LTGRAY)
+                }else {
+                    text_nav.setTextColor(Color.BLACK)
+                }
+                itemView.setOnClickListener {
+                    itemClick(this)
+                    refreshTheItem(option)
+                }
             }
         }
     }
+
+    private fun refreshTheItem(option: Option) {
+        mutableList.map { if(it == option) {
+            it.selected = !option.selected
+        } else{
+            it.selected = false
+        }}
+        notifyDataSetChanged()
+    }
+
 
 
 }

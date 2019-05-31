@@ -1,11 +1,13 @@
 package com.gobinda.facilities.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gobinda.facilities.R
 import com.gobinda.facilities.data.api.Facility
+import com.gobinda.facilities.data.api.Option
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item.*
 import timber.log.Timber
@@ -60,9 +62,25 @@ class NavAdapter(
             Timber.d(" FF ")
             with(facility) {
                 text_nav.text = facility.name
-                itemView.setOnClickListener { itemClick(this) }
+                if(selected) {
+                    text_nav.setTextColor(Color.RED)
+                }else {
+                    text_nav.setTextColor(Color.BLACK)
+                }
+                itemView.setOnClickListener { itemClick(this)
+                refreshTheItem(this)}
+
             }
         }
+    }
+
+    private fun refreshTheItem(facility: Facility) {
+        mutableList.map { if(it == facility) {
+            it.selected = !facility.selected
+        } else{
+            it.selected = false
+        }}
+        notifyDataSetChanged()
     }
 
 
