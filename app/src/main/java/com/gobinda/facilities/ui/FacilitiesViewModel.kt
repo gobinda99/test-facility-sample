@@ -1,15 +1,12 @@
 package com.gobinda.facilities.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gobinda.facilities.data.DataSource
 import com.gobinda.facilities.data.api.Exclusions
 import com.gobinda.facilities.data.api.Facility
-import com.gobinda.facilities.data.api.JsonResponse
 import com.gobinda.facilities.data.api.Option
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import timber.log.Timber
 
 class FacilitiesViewModel(val data: DataSource) : ViewModel() {
@@ -37,42 +34,36 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
     }
 
     fun getOption(facilityId : String ){
-
-        val sec: MutableList<Exclusions> = mutableListOf()
-
-        mutableLiveData.value?.map { f ->
-            f.options.map { o ->
-                if (o.selected) {
-                    sec.add(Exclusions(f.facilityId!!, o.id))
-                    Timber.d(" ttt  " + f.facilityId+"    " + o.id +" "+o.name)
+        val selectedOptions: MutableList<Exclusions> = mutableListOf()
+        mutableLiveData.value?.map { fac ->
+            fac.options.map { opt ->
+                if (opt.selected) {
+                    selectedOptions.add(Exclusions(fac.facilityId!!, opt.id))
+                    Timber.d(" ttt  %s %s %s " , fac.facilityId, opt.id , opt.name)
                 }
-
             }
         }
-
-        val options =  mutableLiveData.value?.filter {
+        val options = mutableLiveData.value?.filter {
             it.facilityId == facilityId
         }?.firstOrNull()?.options
 
-        options?.forEach lit@{
-            option ->
-            option.disabled = false
-            if(!option.selected)
-            exclusions?.forEach { list1 ->
-                sec.forEach { sec ->
-                    list1!!.forEach {
-                        if(it.facilityId == sec.facilityId && it.optionsId == sec.optionsId){
-                           list1.filter { !(it.facilityId == sec.facilityId) }.forEach {
-                               if(it.facilityId == facilityId && it.optionsId == option.id ) {
-                                   option.disabled = true;
-                                   return@lit
-                               }
-                           }
+        options?.forEach lit@{ opt ->
+            opt.disabled = false
+            if (!opt.selected)
+                exclusions?.forEach { muExcl ->
+                    selectedOptions.forEach { selOpt ->
+                        muExcl!!.forEach {
+                            if (it.facilityId == selOpt.facilityId && it.optionsId == selOpt.optionsId) {
+                                muExcl.filter { !(it.facilityId == selOpt.facilityId) }.forEach {
+                                    if (it.facilityId == facilityId && it.optionsId == opt.id) {
+                                        opt.disabled = true;
+                                        return@lit
+                                    }
+                                }
+                            }
                         }
                     }
                 }
-
-            }
         }
         optionMutableLiveData.value = options
 
