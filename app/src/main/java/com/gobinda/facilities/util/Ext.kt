@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.Gravity
 import com.google.android.material.snackbar.Snackbar
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +35,20 @@ fun TextView.toIcon(text: CharSequence? = this.text) : TextView{
         "fonts/FontAwesome.ttf")
     this.text = text
     return this
+}
+
+fun ImageView.setIcon( name: String){
+    val resId = context.resources.getIdentifier(
+        name.replace("-", "_"),"drawable",
+        context.packageName)
+    if(resId != 0) {
+        this.setImageResource(resId)
+    }
+//    esources resources = context.getResources();
+//    final int resourceId = resources.getIdentifier(name, "drawable",
+//        context.getPackageName());
+//    return resources.getDrawable(resourceId);
+
 }
 
 

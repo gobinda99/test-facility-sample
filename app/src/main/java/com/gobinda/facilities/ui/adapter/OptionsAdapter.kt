@@ -7,8 +7,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gobinda.facilities.R
 import com.gobinda.facilities.data.model.Option
+import com.gobinda.facilities.util.setIcon
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item.*
+import kotlinx.android.synthetic.main.nav_item.text_nav
+import kotlinx.android.synthetic.main.option_item.*
 
 class OptionsAdapter(
     options: List<Option>,
@@ -30,7 +33,7 @@ class OptionsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflate = LayoutInflater.from(parent.context)
-        return inflate.inflate(R.layout.nav_item, parent, false)
+        return inflate.inflate(R.layout.option_item, parent, false)
             .run {
                 ItemViewHolder(this, itemClick)
 
@@ -58,7 +61,8 @@ class OptionsAdapter(
 
         fun bind(option: Option) {
             with(option) {
-                text_nav.text = option.name
+                text_nav.text = name
+                image_icon.setIcon(icon)
                 if(selected) {
                     text_nav.setTextColor(Color.RED)
                 }else if(disabled) {
