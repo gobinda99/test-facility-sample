@@ -10,9 +10,11 @@
                android:layout_gravity="center"
                android:gravity="center"
                android:id="@+id/image_icon"
+               android:paddingLeft="10dp"
+               android:paddingRight="10dp"
     />
 
-    <TextView android:layout_width="match_parent"
+    <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/text_nav"
               android:paddingLeft="10dp"
