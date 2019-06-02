@@ -3,7 +3,7 @@ package com.nytimes.sample.di
 import android.content.Context
 import androidx.work.WorkerFactory
 import com.gobinda.facilities.App
-import com.gobinda.facilities.worker2.SampleWorkerFactory
+import com.gobinda.facilities.di.worker.DaggerWorkerFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -23,7 +23,7 @@ abstract class AppModule {
     internal abstract fun bindContext(app: App): Context
 
     @Binds
-    internal abstract fun bindWorkerFactory(app: SampleWorkerFactory): WorkerFactory
+    internal abstract fun bindWorkerFactory(app: DaggerWorkerFactory): WorkerFactory
 
 
 

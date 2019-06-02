@@ -1,12 +1,9 @@
 package com.gobinda.facilities.di
 
 import com.gobinda.facilities.App
-import com.gobinda.facilities.worker2.SampleAssistedInjectModule
-import com.gobinda.facilities.worker2.SampleWorkerFactory
-import com.gobinda.facilities.worker2.WorkerBindingModule
+import com.gobinda.facilities.worker.SampleAssistedInjectModule
 import com.nytimes.sample.di.AppModule
 import dagger.Component
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 import dagger.BindsInstance
@@ -31,25 +28,8 @@ import dagger.BindsInstance
         WorkerBindingModule::class
     )
 )
-//interface AppComponent : AndroidInjector<App> {
-//
-//         fun workerFactory(): SampleWorkerFactory
-//
-//
-//
-////    @Component.Builder
-////    abstract class Builder : AndroidInjector.Builder<App>()
-//
-//     @Component.Factory
-//     abstract class Factory : AndroidInjector.Factory<App>
-//
-//
-////     fun workerFactory(): SampleWorkerFactory
-//
-//}
 interface AppComponent  {
 
-//     fun workerFactory(): SampleWorkerFactory
 
      @Component.Builder
      interface Builder {

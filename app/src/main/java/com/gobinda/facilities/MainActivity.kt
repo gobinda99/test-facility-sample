@@ -2,9 +2,7 @@ package com.gobinda.facilities
 
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -14,8 +12,7 @@ import com.gobinda.facilities.ui.BaseFragmentActivity
 import com.gobinda.facilities.ui.FacilitiesViewModel
 import com.gobinda.facilities.ui.NavFragment
 import com.gobinda.facilities.ui.OptionsFragment
-import com.gobinda.facilities.worker2.HelloWorldWorker
-import dagger.android.AndroidInjection
+import com.gobinda.facilities.worker.FacilityWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
@@ -50,7 +47,7 @@ class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
 //        WorkManager.getInstance().enqueue(uploadWorkRequest)
 
         WorkManager.getInstance().enqueue(
-            OneTimeWorkRequestBuilder<HelloWorldWorker>().build()
+            OneTimeWorkRequestBuilder<FacilityWorker>().build()
         )
 
     }
