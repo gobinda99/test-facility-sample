@@ -4,7 +4,7 @@ import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 
 
-@Module(includes = [AssistedInject_SampleAssistedInjectModule::class])
+@Module(includes = [AssistedInject_FacilityWorkerAssistedInjectModule::class])
 @AssistedModule
-interface SampleAssistedInjectModule
+interface FacilityWorkerAssistedInjectModule
 

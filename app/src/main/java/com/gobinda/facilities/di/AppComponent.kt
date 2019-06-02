@@ -1,7 +1,7 @@
 package com.gobinda.facilities.di
 
 import com.gobinda.facilities.App
-import com.gobinda.facilities.worker.SampleAssistedInjectModule
+import com.gobinda.facilities.worker.FacilityWorkerAssistedInjectModule
 import com.nytimes.sample.di.AppModule
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
@@ -24,7 +24,7 @@ import dagger.BindsInstance
         AppModule::class,
         ActivityBindingModule::class,
         AndroidSupportInjectionModule::class,
-        SampleAssistedInjectModule::class,
+        FacilityWorkerAssistedInjectModule::class,
         WorkerBindingModule::class
     )
 )
