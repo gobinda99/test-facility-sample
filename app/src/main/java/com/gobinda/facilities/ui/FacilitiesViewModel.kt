@@ -3,9 +3,9 @@ package com.gobinda.facilities.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gobinda.facilities.data.DataSource
-import com.gobinda.facilities.data.api.Exclusions
-import com.gobinda.facilities.data.api.Facility
-import com.gobinda.facilities.data.api.Option
+import com.gobinda.facilities.data.model.Exclusions
+import com.gobinda.facilities.data.model.Facility
+import com.gobinda.facilities.data.model.Option
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 
@@ -38,13 +38,13 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
         mutableLiveData.value?.map { fac ->
             fac.options.map { opt ->
                 if (opt.selected) {
-                    selectedOptions.add(Exclusions(fac.facilityId!!, opt.id))
-                    Timber.d(" ttt  %s %s %s " , fac.facilityId, opt.id , opt.name)
+                    selectedOptions.add(Exclusions(fac.id!!, opt.id))
+                    Timber.d(" ttt  %s %s %s " , fac.id, opt.id , opt.name)
                 }
             }
         }
         val options = mutableLiveData.value?.filter {
-            it.facilityId == facilityId
+            it.id == facilityId
         }?.firstOrNull()?.options
 
         options?.forEach lit@{ opt ->

@@ -2,21 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "87948def63bc792ef80e3a5aae1f565b",
+    "identityHash": "a585e288e3475620f30a0581112823b5",
     "entities": [
       {
-        "tableName": "data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `data` TEXT NOT NULL)",
+        "tableName": "Facility",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "data",
-            "columnName": "data",
+            "fieldPath": "name",
+            "columnName": "name",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -25,16 +25,75 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Option",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `icon` TEXT NOT NULL, `facility_id` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`facility_id`) REFERENCES `Facility`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facilityId",
+            "columnName": "facility_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Option_facility_id",
+            "unique": false,
+            "columnNames": [
+              "facility_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Option_facility_id` ON `${TABLE_NAME}` (`facility_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Facility",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "facility_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87948def63bc792ef80e3a5aae1f565b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a585e288e3475620f30a0581112823b5')"
     ]
   }
 }

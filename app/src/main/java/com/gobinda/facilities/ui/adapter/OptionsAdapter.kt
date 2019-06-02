@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gobinda.facilities.R
-import com.gobinda.facilities.data.api.Option
+import com.gobinda.facilities.data.model.Option
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item.*
-import timber.log.Timber
 
 class OptionsAdapter(
     options: List<Option>,

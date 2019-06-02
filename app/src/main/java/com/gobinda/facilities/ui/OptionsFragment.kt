@@ -8,15 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gobinda.facilities.R
-import com.gobinda.facilities.data.api.Facility
 import com.gobinda.facilities.di.ActivityScope
 import com.gobinda.facilities.di.ViewModelProviderFactory
-import com.gobinda.facilities.ui.adapter.NavAdapter
 import com.gobinda.facilities.ui.adapter.OptionsAdapter
-import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.frag_navigation.*
 import timber.log.Timber

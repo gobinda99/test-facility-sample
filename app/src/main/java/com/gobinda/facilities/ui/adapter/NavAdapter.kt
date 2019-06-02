@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gobinda.facilities.R
-import com.gobinda.facilities.data.api.Facility
-import com.gobinda.facilities.data.api.Option
+import com.gobinda.facilities.data.model.Facility
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item.*
 import timber.log.Timber
