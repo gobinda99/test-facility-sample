@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.data.model.Option
+import com.gobinda.facilities.data.room.OptionDao
 
 /**
  * ORM Database Helper class to connect to the database
@@ -14,7 +15,8 @@ import com.gobinda.facilities.data.model.Option
 @Database(entities = [Facility::class, Option::class], version = 1)
 abstract class FacilitiesDatabase : RoomDatabase() {
 
-    abstract fun flightEventDao(): FacilityDao
+    abstract fun facilityDao(): FacilityDao
+    abstract fun optionDao(): OptionDao
 
     companion object {
 

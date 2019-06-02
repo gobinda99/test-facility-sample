@@ -14,6 +14,6 @@ import javax.inject.Singleton
  */
 @Singleton
 class DataSource @Inject constructor(private val context: Context) {
-//    val database = FacilitiesDatabase.getInstance(context)
+    val database = FacilitiesDatabase.getInstance(context)
     val api = RestApi.api
 }

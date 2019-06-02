@@ -16,7 +16,7 @@ interface OptionDao {
     fun loadOptions(): Single<List<Option>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOption(vararg options : Option) : Completable
+    fun insertOption( options : List<Option>) : Completable
 
     @Query("SELECT * from option where facility_id = :facilityID LIMIT 1")
     fun loadOptionByFacilityId(facilityID: Int): Single<List<Option>>

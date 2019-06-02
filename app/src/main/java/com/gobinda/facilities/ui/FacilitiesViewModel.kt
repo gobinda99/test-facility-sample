@@ -7,6 +7,7 @@ import com.gobinda.facilities.data.model.Exclusions
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.data.model.Option
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class FacilitiesViewModel(val data: DataSource) : ViewModel() {
@@ -24,9 +25,36 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 
     private fun callApi(){
         data.api.getData().observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                exclusions = it.exclusions
-                mutableLiveData.value = it.facilities
+            .subscribe({ res ->
+                exclusions = res.exclusions
+                mutableLiveData.value = res.facilities
+                data.database.facilityDao()
+                    .insertFacilities(res.facilities!!)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe {
+                        res.facilities.forEach { fac ->
+                            fac.options?.map { it.facilityId = fac.id }
+                            data.database.optionDao().insertOption(fac.options!!)
+                                .subscribe({
+                                    // test code of option
+                                    /* data.database.optionDao()
+                                         .loadOptions()
+                                         .subscribe({
+                                             Timber.d( " Store %s ",it.size)
+                                         },{})*/
+                                }, {
+                                    Timber.e(it)
+                                })
+                            // test code of option
+                            /*data.database.facilityDao().loadFacilityWithOptions()
+                                .subscribe({
+                                    val size = it.map { it.facility }
+                                        .get(0)?.options?.size
+                                    Timber.d("Store s %s",size)
+                                },{Timber.e(it)})*/
+                        }
+                    }
+
             }, { e ->
 
                 Timber.e(e)
@@ -36,9 +64,9 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
     fun getOption(facilityId : String ){
         val selectedOptions: MutableList<Exclusions> = mutableListOf()
         mutableLiveData.value?.map { fac ->
-            fac.options.map { opt ->
+            fac.options?.map { opt ->
                 if (opt.selected) {
-                    selectedOptions.add(Exclusions(fac.id!!, opt.id))
+                    selectedOptions.add(Exclusions(fac.id, opt.id))
                     Timber.d(" ttt  %s %s %s " , fac.id, opt.id , opt.name)
                 }
             }

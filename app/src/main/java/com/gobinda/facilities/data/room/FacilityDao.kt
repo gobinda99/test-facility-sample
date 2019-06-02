@@ -1,11 +1,11 @@
 package com.gobinda.mvp.sample.room
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.gobinda.facilities.data.model.Facility
+import com.gobinda.facilities.data.model.FacilityImpl
+import com.gobinda.facilities.data.model.Option
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -14,13 +14,23 @@ import io.reactivex.Single
  * scheduling, non block ui operation can be maintained easily.
  */
 @Dao
-interface FacilityDao {
+interface  FacilityDao {
 
     @Query("SELECT * FROM facility")
     fun loadFacility(): Single<List<Facility>>
 
+    @Transaction
+    @Query("SELECT * FROM facility")
+    fun loadFacilityWithOptions(): Single<List<FacilityImpl>>
+
+   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertOption( options : List<Option>) : Completable*/
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFacilities(vararg users : Facility) : Completable
+     fun insertFacilities(vararg users : Facility) : Completable
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+     fun insertFacilities(users : List<Facility>) : Completable
 
     @Query("DELETE FROM facility")
     fun deleteAllFacility(): Completable
@@ -36,3 +46,19 @@ interface FacilityDao {
 //    @Query("DELETE FROM flight_events")
 //    fun deleteAllFlightEvents(): Completable
 }
+
+//fun FacilityDao.insertFacilitiesWithOptions(users : List<Facility>) : Completable {
+//    return Completable.create {
+//        try {
+//            insertFacilities(users).subscribe()
+//            users.forEach { fac ->
+//                fac.options.map { it.facilityId = fac.id  }
+//                insertOption(fac.options).subscribe()
+//                it.onComplete()
+//            }
+//
+//        }catch (e : Throwable) {
+//            it.onError(e)
+//        }
+//    }
+//}
