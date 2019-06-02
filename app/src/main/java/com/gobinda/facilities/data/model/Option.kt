@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull
     childColumns = arrayOf("facility_id"),
     onDelete = ForeignKey.CASCADE)
 ))
-//@Entity
 data class Option(
     @PrimaryKey
     var id: String = "",

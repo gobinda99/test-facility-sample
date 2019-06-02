@@ -17,13 +17,13 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
         callApi()
     }
 
-    val mutableLiveData : MutableLiveData<List<Facility>> = MutableLiveData()
+    val mutableLiveData: MutableLiveData<List<Facility>> = MutableLiveData()
 
     private var exclusions: List<List<Exclusions>?>? = null;
 
-    val optionMutableLiveData : MutableLiveData<List<Option>> = MutableLiveData()
+    val optionMutableLiveData: MutableLiveData<List<Option>> = MutableLiveData()
 
-    private fun callApi(){
+    private fun callApi() {
         data.api.getData().observeOn(AndroidSchedulers.mainThread())
             .subscribe({ res ->
                 exclusions = res.exclusions
@@ -45,7 +45,7 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
                                 }, {
                                     Timber.e(it)
                                 })
-                            // test code of option
+                            // test code of get option with option
                             /*data.database.facilityDao().loadFacilityWithOptions()
                                 .subscribe({
                                     val size = it.map { it.facility }
@@ -53,6 +53,51 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
                                     Timber.d("Store s %s",size)
                                 },{Timber.e(it)})*/
                         }
+                        res.exclusions?.forEach { list ->
+                            list?.let {
+
+
+                            }
+                        }
+                       /* res.exclusions?.let {
+                            for (i in 1..it.size) {
+                                val listEx = it.get(i)
+                                listEx?.let {
+                                    it.forEach {
+                                        it.id = i.toString()
+                                    }
+                                    data.database.exclusionsDao().insertExclusions(it)
+                                        .subscribe({
+                                            Timber.d("Success")
+                                            //Insert success
+                                        }, {
+                                            Timber.e(it)
+                                        })
+                                }
+                            }
+
+                        }*/
+
+                        res.exclusions?.forEachIndexed { index, exclusList ->
+                            exclusList?.forEach { it.id = index.toString() }
+                            exclusList?.let {
+                                data.database.exclusionsDao().insertExclusions(it)
+                                    .subscribe({
+                                        Timber.d("Success")
+                                        //Insert success
+                                    }, {
+                                        Timber.e(it)
+                                    })
+                            }
+
+                        }
+
+                        data.database.exclusionsDao().loadExclusions()
+                            .subscribe({
+                               val exclusions1 : List<List<Exclusions>> =  it.groupBy { it.id }.values.toList()
+                            }, {
+                                Timber.e(it)
+                            })
                     }
 
             }, { e ->
@@ -61,13 +106,13 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
             })
     }
 
-    fun getOption(facilityId : String ){
+    fun getOption(facilityId: String) {
         val selectedOptions: MutableList<Exclusions> = mutableListOf()
         mutableLiveData.value?.map { fac ->
             fac.options?.map { opt ->
                 if (opt.selected) {
                     selectedOptions.add(Exclusions(fac.id, opt.id))
-                    Timber.d(" ttt  %s %s %s " , fac.id, opt.id , opt.name)
+                    Timber.d(" ttt  %s %s %s ", fac.id, opt.id, opt.name)
                 }
             }
         }
@@ -96,8 +141,6 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
         optionMutableLiveData.value = options
 
     }
-
-
 
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.gobinda.facilities.data.model.Exclusions
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.data.model.Option
 import com.gobinda.facilities.data.room.OptionDao
@@ -12,11 +13,12 @@ import com.gobinda.facilities.data.room.OptionDao
  * ORM Database Helper class to connect to the database
  * named flight-sample.db and its records
  */
-@Database(entities = [Facility::class, Option::class], version = 1)
+@Database(entities = [Facility::class, Option::class, Exclusions:: class], version = 1)
 abstract class FacilitiesDatabase : RoomDatabase() {
 
     abstract fun facilityDao(): FacilityDao
     abstract fun optionDao(): OptionDao
+    abstract fun exclusionsDao(): ExclusionsDao
 
     companion object {
 
