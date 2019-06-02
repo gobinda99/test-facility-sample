@@ -6,17 +6,18 @@ import androidx.work.ListenableWorker
 import androidx.work.Worker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.gobinda.facilities.data.DataSource
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import javax.inject.Inject
 import javax.inject.Provider
 
-class Foo @Inject constructor()
+//class Foo @Inject constructor()
 
 class HelloWorldWorker @AssistedInject constructor(
     @Assisted private val appContext: Context,
     @Assisted private val params: WorkerParameters,
-    private val foo: Foo
+    private val foo: DataSource
 ) : Worker(appContext, params) {
     private val TAG = "HelloWorldWorker"
     override fun doWork(): Result {

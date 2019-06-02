@@ -12,15 +12,15 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import kotlin.reflect.KClass
 
-@Component(
-    modules = [
-        SampleAssistedInjectModule::class,
-        WorkerBindingModule::class
-    ]
-)
-interface SampleComponent {
-    fun factory(): SampleWorkerFactory
-}
+//@Component(
+//    modules = [
+//        SampleAssistedInjectModule::class,
+//        WorkerBindingModule::class
+//    ]
+//)
+//interface SampleComponent {
+//    fun factory(): SampleWorkerFactory
+//}
 
 @Module(includes = [AssistedInject_SampleAssistedInjectModule::class])
 @AssistedModule
