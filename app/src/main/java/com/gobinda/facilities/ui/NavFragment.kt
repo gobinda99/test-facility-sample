@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gobinda.facilities.R
+import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ActivityScope
 import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.adapter.NavAdapter
@@ -33,7 +34,7 @@ class NavFragment @Inject constructor() : Fragment() {
 
     val navAdapter = NavAdapter(
         ArrayList(0),
-        { callback.onItemClick(it.id, true)
+        { callback.onItemClick(it, true)
             Timber.d(it.name) })
 
 
@@ -57,9 +58,11 @@ class NavFragment @Inject constructor() : Fragment() {
         super.onActivityCreated(savedInstanceState)
         model.mutableLiveData.observe(this, Observer {
             navAdapter.addItem(it,true)
-//            if(!it.isNullOrEmpty()) {
-//                callback.onItemClick(it[0].id!!, false)
-//            }
+            if(!it.isNullOrEmpty()) {
+                it[0].selected = true
+                callback.onItemClick(it[0], false)
+
+            }
         })
     }
 
@@ -87,7 +90,7 @@ class NavFragment @Inject constructor() : Fragment() {
     }
 
     interface NavItemCallback{
-        fun onItemClick(facilityId : String, closeNav : Boolean)
+        fun onItemClick(facility : Facility, closeNav : Boolean)
     }
 
 }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
+import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.BaseFragmentActivity
 import com.gobinda.facilities.ui.FacilitiesViewModel
@@ -16,14 +17,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseFragmentActivity() , NavFragment.NavItemCallback {
+class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
 
     @Inject
-    lateinit var factory : ViewModelProviderFactory
+    lateinit var factory: ViewModelProviderFactory
 
-    val model : FacilitiesViewModel by lazy {
-         ViewModelProviders.of(this, factory).get(FacilitiesViewModel::class.java)
-     }
+    val model: FacilitiesViewModel by lazy {
+        ViewModelProviders.of(this, factory).get(FacilitiesViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 //        AndroidInjection.inject(this)
@@ -50,13 +51,17 @@ class MainActivity : BaseFragmentActivity() , NavFragment.NavItemCallback {
         }
     }
 
-    override fun onItemClick(facilityId: String, closeNav: Boolean) {
+    override fun onItemClick(facility: Facility, closeNav: Boolean) {
         if (!isFinishing() && !isDestroyed()) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, OptionsFragment.newInstance(facilityId)).commit()
+            with(facility) {
+                setTitle(name)
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, OptionsFragment.newInstance(id)).commit()
+            }
+
         }
 
-       if(closeNav)
-        drawer_layout.closeDrawer(GravityCompat.START)
+        if (closeNav)
+            drawer_layout.closeDrawer(GravityCompat.START)
     }
 }
