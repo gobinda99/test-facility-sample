@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.BaseFragmentActivity
 import com.gobinda.facilities.ui.FacilitiesViewModel
 import com.gobinda.facilities.ui.NavFragment
 import com.gobinda.facilities.ui.OptionsFragment
+import com.gobinda.facilities.worker2.HelloWorldWorker
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -40,6 +43,15 @@ class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+
+//        val uploadWorkRequest = OneTimeWorkRequestBuilder<SyncWorker>()
+//            .build()
+//
+//        WorkManager.getInstance().enqueue(uploadWorkRequest)
+
+        WorkManager.getInstance().enqueue(
+            OneTimeWorkRequestBuilder<HelloWorldWorker>().build()
+        )
 
     }
 

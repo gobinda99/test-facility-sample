@@ -4,6 +4,8 @@ import android.content.Context
 import com.gobinda.facilities.App
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
+import javax.inject.Singleton
 
 
 /**
@@ -17,6 +19,8 @@ abstract class AppModule {
      */
     @Binds
     internal abstract fun bindContext(app: App): Context
+
+
 
 
 }
