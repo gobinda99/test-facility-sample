@@ -20,13 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <provider
-                android:name="androidx.work.impl.WorkManagerInitializer"
-                android:authorities="${applicationId}.workmanager-init"
-                android:enabled="false"
-                android:exported="false"
-                tools:replace="android:authorities"/>
     </application>
 
 </manifest>

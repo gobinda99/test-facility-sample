@@ -1,7 +1,7 @@
 package com.gobinda.facilities.di
 
 import com.gobinda.facilities.App
-import com.gobinda.facilities.worker.FacilityWorkerAssistedInjectModule
+import com.gobinda.facilities.data.DataSource
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
@@ -22,9 +22,7 @@ import dagger.BindsInstance
     modules = arrayOf(
         AppModule::class,
         ActivityBindingModule::class,
-        AndroidSupportInjectionModule::class,
-        FacilityWorkerAssistedInjectModule::class,
-        WorkerBindingModule::class
+        AndroidSupportInjectionModule::class
     )
 )
 interface AppComponent  {
@@ -42,5 +40,6 @@ interface AppComponent  {
 
     fun inject(app: App)
 
+    fun dataSource() : DataSource
 
 }

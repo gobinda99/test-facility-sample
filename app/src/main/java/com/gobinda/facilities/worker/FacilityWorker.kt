@@ -3,24 +3,23 @@ package com.gobinda.facilities.worker
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.gobinda.facilities.data.DataSource
+import com.gobinda.facilities.App
 import com.gobinda.facilities.data.store
-import com.gobinda.facilities.di.worker.ChildWorkerFactory
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import com.gobinda.facilities.di.HasInjector
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 
-class FacilityWorker @AssistedInject constructor(
-    @Assisted private val appContext: Context,
-    @Assisted private val params: WorkerParameters,
-    private val dataSource: DataSource
-) : Worker(appContext, params) {
+class FacilityWorker (
+     private val appContext: Context,
+     private val params: WorkerParameters
+) : Worker(appContext, params), HasInjector<App> {
 
     override fun doWork(): Result {
 
         Timber.d("doWork")
+
+        val dataSource = injector().appComponent.dataSource()
 
         dataSource.api.getFacilityData()
             .subscribeOn(Schedulers.trampoline())
@@ -32,9 +31,8 @@ class FacilityWorker @AssistedInject constructor(
         return Result.success()
     }
 
+    override fun injector(): App = applicationContext as App
 
-    @AssistedInject.Factory
-    interface Factory : ChildWorkerFactory
 }
 
 
