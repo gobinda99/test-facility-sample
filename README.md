@@ -7,7 +7,7 @@ It display a list of facilities and its options. Each facility allows to select 
 
  - MVVM pattern using ViewModel, LiveData. It is used 'cause VM  expose data to View and rather than callback,
   VM hold data of view and its not gets destroyed on orientation change, Relation between View and ViewModel is many to many.
- - Room for local data storage
+ - Room for local data storage in database, it is used for ORM to database.
  - Dagger & Assisted for dependency injection, clean code, and flexibility.
  - Retrofit for Rest Api, Gson for Pojo class as adapter to Retrofit.
  - RxJava for Thread Scheduling, Api callback, Room database operation callback, and error handling.
