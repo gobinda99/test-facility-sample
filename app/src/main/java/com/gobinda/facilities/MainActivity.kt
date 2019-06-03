@@ -40,12 +40,6 @@ class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-
-//        val uploadWorkRequest = OneTimeWorkRequestBuilder<SyncWorker>()
-//            .build()
-//
-//        WorkManager.getInstance().enqueue(uploadWorkRequest)
-
         WorkManager.getInstance().enqueue(
             OneTimeWorkRequestBuilder<FacilityWorker>().build()
         )

@@ -19,14 +19,14 @@ data class Facility(
 )
 
 class FacilityImpl(
-     facility: Facility?,
+     facility: Facility,
      @Relation(parentColumn = "id", entityColumn = "facility_id", entity = Option::class)
      var options: List<Option>? = emptyList()
 )  {
     @Embedded
     var facility  = facility
     get() {
-        field?.options = options
+        field.options = options
         return field
     }
 

@@ -1,6 +1,7 @@
-package com.gobinda.facilities
+package com.gobinda.facilities.worker
 
 import androidx.work.*
+import com.gobinda.facilities.SyncWorker
 import java.util.concurrent.TimeUnit
 
 fun createConstraints() = Constraints.Builder()
@@ -18,12 +19,12 @@ fun createWorkRequest(data: Data) = PeriodicWorkRequestBuilder<SyncWorker>(24, T
     .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
     .build()
 
-fun startWork() {
+fun startFacilityWork() {
     // set the input data, it is like a Bundle
     val work = createWorkRequest(Data.EMPTY)
     /* enqueue a work, ExistingPeriodicWorkPolicy.KEEP means that if this work already existits, it will be kept
     if the value is ExistingPeriodicWorkPolicy.REPLACE, then the work will be replaced */
-    WorkManager.getInstance().enqueueUniquePeriodicWork("Smart work", ExistingPeriodicWorkPolicy.KEEP, work)
+    WorkManager.getInstance().enqueueUniquePeriodicWork("FacilityWorker", ExistingPeriodicWorkPolicy.KEEP, work)
 
     // Observe the result od the work
     /*WorkManager.getInstance().getWorkInfoByIdLiveData(work.id)
