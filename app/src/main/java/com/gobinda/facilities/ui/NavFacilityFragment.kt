@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gobinda.facilities.R
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ActivityScope
-import com.gobinda.facilities.ui.adapter.NavAdapter
+import com.gobinda.facilities.ui.adapter.NavFacilityAdapter
 import com.gobinda.facilities.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.frag_navigation.*
 import timber.log.Timber
@@ -27,16 +28,11 @@ class NavFacilityFragment @Inject constructor() : BaseFragment() {
 
     val callback : NavItemCallback by lazy { context as NavItemCallback}
 
-    val navAdapter = NavAdapter(
+    val navAdapter = NavFacilityAdapter(
         ArrayList(0),
         { callback.onItemClick(it, true)
             Timber.d(it.name) })
 
-
-//    override fun onAttach(context: Context) {
-//        AndroidSupportInjection.inject(this)
-//        super.onAttach(context)
-//    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,7 +63,7 @@ class NavFacilityFragment @Inject constructor() : BaseFragment() {
             adapter = navAdapter
             val manager = LinearLayoutManager(context)
             layoutManager = manager
-            /*addItemDecoration(DividerItemDecoration(context,manager.orientation))*/
+            addItemDecoration(DividerItemDecoration(context,manager.orientation))
 
         }
 

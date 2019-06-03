@@ -11,7 +11,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.nav_item.*
 import timber.log.Timber
 
-class NavAdapter(
+class NavFacilityAdapter(
     facilities: List<Facility>,
     private val itemClick: (Facility) -> Unit = {}
 ) :

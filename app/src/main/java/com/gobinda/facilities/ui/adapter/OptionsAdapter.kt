@@ -55,10 +55,6 @@ class OptionsAdapter(
     inner class ItemViewHolder(override val containerView: View, private val itemClick: (Option) -> Unit) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        init {
-//            rightIcon.toIcon(R.string.fa_angle_right)
-        }
-
         fun bind(option: Option) {
             with(option) {
                 text_nav.text = name
