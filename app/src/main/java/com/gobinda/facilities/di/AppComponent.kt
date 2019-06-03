@@ -2,7 +2,6 @@ package com.gobinda.facilities.di
 
 import com.gobinda.facilities.App
 import com.gobinda.facilities.worker.FacilityWorkerAssistedInjectModule
-import com.nytimes.sample.di.AppModule
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton

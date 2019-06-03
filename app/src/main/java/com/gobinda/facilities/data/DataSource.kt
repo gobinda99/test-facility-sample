@@ -2,7 +2,7 @@ package com.gobinda.facilities.data
 
 import android.content.Context
 import com.gobinda.facilities.data.api.RestApi
-import com.gobinda.mvp.sample.room.FacilitiesDatabase
+import com.gobinda.facilities.data.room.FacilitiesDatabase
 import javax.inject.Inject
 import javax.inject.Singleton
 

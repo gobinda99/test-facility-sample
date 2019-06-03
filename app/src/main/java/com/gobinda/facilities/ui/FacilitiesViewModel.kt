@@ -54,7 +54,7 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
     }
 
     private fun api() {
-        disposable.add(data.api.getData().subscribeOn(Schedulers.io())
+        disposable.add(data.api.getFacilityData().subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 store(data.database, it)

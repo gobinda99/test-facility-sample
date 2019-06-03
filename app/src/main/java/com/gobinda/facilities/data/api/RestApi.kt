@@ -22,7 +22,7 @@ import retrofit2.Call
 interface RestApi {
 
     @GET("/iranjith4/ad-assignment/db")
-    fun getData(): Flowable<FacilityData>
+    fun getFacilityData(): Flowable<FacilityData>
 
     companion object {
 

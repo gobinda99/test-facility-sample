@@ -1,7 +1,6 @@
 package com.gobinda.facilities.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.gobinda.facilities.data.DataSource
@@ -19,18 +18,17 @@ class FacilityWorker @AssistedInject constructor(
     @Assisted private val params: WorkerParameters,
     private val dataSource: DataSource
 ) : Worker(appContext, params) {
-    private val TAG = "FacilityWorker"
     private val disposable = CompositeDisposable()
 
     override fun doWork(): Result {
-        Log.d(TAG, "Hello world!")
-        Log.d(TAG, "Injected foo: $dataSource")
 
-       disposable.add( dataSource.api.getData().subscribeOn(Schedulers.trampoline()).subscribe({
-             store(dataSource.database, it).subscribe({},{Timber.e(it)})
-         }, { Timber.e(it)}))
+        Timber.d("doWork")
 
-//        disposable.clear()
+        disposable.add(dataSource.api.getFacilityData().subscribeOn(Schedulers.trampoline()).subscribe({
+            store(dataSource.database, it).subscribe({}, { Timber.e(it) })
+        }, { Timber.e(it) }))
+
+        disposable.clear()
 
         return Result.success()
     }

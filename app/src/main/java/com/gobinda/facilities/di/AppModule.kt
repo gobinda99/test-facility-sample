@@ -1,13 +1,9 @@
-package com.nytimes.sample.di
+package com.gobinda.facilities.di
 
 import android.content.Context
-import androidx.work.WorkerFactory
 import com.gobinda.facilities.App
-import com.gobinda.facilities.di.worker.DaggerWorkerFactory
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
 
 
 /**
@@ -21,11 +17,6 @@ abstract class AppModule {
      */
     @Binds
     internal abstract fun bindContext(app: App): Context
-
-    @Binds
-    internal abstract fun bindWorkerFactory(app: DaggerWorkerFactory): WorkerFactory
-
-
 
 
 }

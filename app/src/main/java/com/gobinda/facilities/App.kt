@@ -20,7 +20,7 @@ import dagger.android.HasActivityInjector
 class App : Application(), HasActivityInjector {
 
     @Inject
-    lateinit var activityInjector : DispatchingAndroidInjector<Activity>
+    lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
     @Inject
     lateinit var workerFactory: DaggerWorkerFactory
@@ -38,8 +38,10 @@ class App : Application(), HasActivityInjector {
             .application(this)
             .build().inject(this)
 
-        WorkManager.initialize(this, Configuration.Builder()
-            .setWorkerFactory(workerFactory).build())
+        WorkManager.initialize(
+            this, Configuration.Builder()
+                .setWorkerFactory(workerFactory).build()
+        )
 
 
     }

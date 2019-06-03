@@ -1,4 +1,4 @@
-package com.gobinda.mvp.sample.room
+package com.gobinda.facilities.data.room
 
 import android.content.Context
 import androidx.room.Database

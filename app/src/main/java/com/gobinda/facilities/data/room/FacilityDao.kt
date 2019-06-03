@@ -1,4 +1,4 @@
-package com.gobinda.mvp.sample.room
+package com.gobinda.facilities.data.room
 
 import androidx.room.*
 import com.gobinda.facilities.data.model.Facility
@@ -23,8 +23,8 @@ interface  FacilityDao {
     @Query("SELECT * FROM facility")
     fun loadFacilityWithOptions(): Single<List<FacilityImpl>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFacilities(vararg users : Facility) : Completable
+   /* @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertFacilities(vararg users : Facility) : Completable*/
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertFacilities(users : List<Facility>) : Completable
