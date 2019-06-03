@@ -1,6 +1,7 @@
 package com.gobinda.facilities.ui.base
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
@@ -15,6 +16,7 @@ import com.gobinda.facilities.util.showSnackBar
 import com.gobinda.facilities.worker.startWorkManagerIfNotInitiated
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseAppCompatActivity(), NavFacilityFragment.NavItemCallback {
@@ -39,16 +41,46 @@ class MainActivity : BaseAppCompatActivity(), NavFacilityFragment.NavItemCallbac
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        model.start()
+        callAndObserveVModel()
 
-        model.error.observe(this, Observer {
-            if(! it.isHandled() ){
+        startWorkManagerIfNotInitiated()
+
+    }
+
+    private fun callAndObserveVModel() {
+        model.init()
+
+        model.errorEvent.observe(this, Observer {
+            if (it.contentIfNotHandled != null) {
                 drawer_layout.showSnackBar(getString(R.string.msg_failed_to_refresh), 2000)
             }
         })
 
-        startWorkManagerIfNotInitiated()
+        model.loading.observe(this, Observer {
+            if (it) {
+                container.visibility = View.GONE
+                empty_view.visibility = View.GONE
+                loader.visibility = View.VISIBLE
+            } else {
+                loader.visibility = View.GONE
+            }
+        })
 
+        model.error.observe(this, Observer {
+            if (it) {
+                container.visibility = View.GONE
+                empty_view.visibility = View.VISIBLE
+                loader.visibility = View.GONE
+            } else {
+                empty_view.visibility = View.GONE
+            }
+        })
+
+        model.facilities.observe(this, Observer {
+            container.visibility = View.VISIBLE
+        })
+
+        empty_view.setOnClickListener { model.retry() }
     }
 
     override fun onBackPressed() {

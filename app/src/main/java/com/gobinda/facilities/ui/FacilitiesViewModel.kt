@@ -16,29 +16,45 @@ import timber.log.Timber
 
 class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 
+
     private val disposable = CompositeDisposable()
+    private var init = false
 
 
     private var exclusions: List<List<Exclusions>?>? = null;
 
-    val error: MutableLiveData<Event<Throwable>> = MutableLiveData()
+
+    val errorEvent: MutableLiveData<Event<Throwable>> = MutableLiveData()
+    val loading: MutableLiveData<Boolean> = MutableLiveData()
+    val error: MutableLiveData<Boolean> = MutableLiveData()
 
     val facilities: MutableLiveData<List<Facility>> = MutableLiveData()
 
     val optionForVisibleFacility: MutableLiveData<List<Option>> = MutableLiveData()
 
-    fun start() {
-        disposable.add(data.database.facilityDao().loadFacility()
-            .subscribeOn(Schedulers.io()).subscribe({
-                if(!it.isEmpty()) {
-                    loadFromDB()
-                } else {
+
+    fun init(force : Boolean = false) {
+        if(force || !init) {
+            init = true
+            loading.value = true
+            disposable.add(data.database.facilityDao().loadFacility()
+                .subscribeOn(Schedulers.io()).subscribe({
+                    if (!it.isEmpty()) {
+                        loadFromDB()
+                    } else {
+                        api()
+                    }
+                }, {
                     api()
-                }
-            },{
-                  api()
-                Timber.e(it)
-            }))
+                    Timber.e(it)
+                })
+            )
+        }
+    }
+
+    fun retry() {
+        error.value = false
+        init(true)
     }
 
     private fun loadFromDB() {
@@ -47,6 +63,8 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
                 if (!it.facilities.isNullOrEmpty()) {
                     facilities.value = it.facilities
                     exclusions = it.exclusions
+                    loading.value = false
+
                 }
 
             }, { Timber.e(it) })
@@ -63,7 +81,9 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
                     loadFromDB()
                 }, { Timber.e(it) })
             }, {
-                error.value = Event(it)
+                errorEvent.value = Event(it)
+                loading.value = false
+                error.value = true
                 Timber.e(it)
             })
         )
