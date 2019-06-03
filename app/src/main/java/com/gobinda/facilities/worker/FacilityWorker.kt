@@ -9,6 +9,7 @@ import com.gobinda.facilities.data.store
 import com.gobinda.facilities.di.worker.ChildWorkerFactory
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
@@ -19,15 +20,21 @@ class FacilityWorker @AssistedInject constructor(
     private val dataSource: DataSource
 ) : Worker(appContext, params) {
     private val TAG = "FacilityWorker"
+    private val disposable = CompositeDisposable()
+
     override fun doWork(): Result {
         Log.d(TAG, "Hello world!")
         Log.d(TAG, "Injected foo: $dataSource")
-        dataSource.api.getData().subscribeOn(Schedulers.trampoline()).subscribe({
+
+       disposable.add( dataSource.api.getData().subscribeOn(Schedulers.trampoline()).subscribe({
              store(dataSource.database, it).subscribe({},{Timber.e(it)})
-         }, { Timber.e(it)})
+         }, { Timber.e(it)}))
+
+//        disposable.clear()
 
         return Result.success()
     }
+
 
     @AssistedInject.Factory
     interface Factory : ChildWorkerFactory

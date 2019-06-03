@@ -11,7 +11,7 @@ import com.gobinda.facilities.data.room.OptionDao
 
 /**
  * ORM Database Helper class to connect to the database
- * named flight-sample.db and its records
+ * named facility-sample.db and its records
  */
 @Database(entities = [Facility::class, Option::class, Exclusions:: class], version = 1)
 abstract class FacilitiesDatabase : RoomDatabase() {
@@ -31,7 +31,7 @@ abstract class FacilitiesDatabase : RoomDatabase() {
             }
 
         private fun bindDatabase(context: Context) =
-            Room.databaseBuilder(context.applicationContext, FacilitiesDatabase::class.java, "flight-sample.db")
+            Room.databaseBuilder(context.applicationContext, FacilitiesDatabase::class.java, "facility-sample.db")
                 .build()
     }
 }

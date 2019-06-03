@@ -24,9 +24,6 @@ interface RestApi {
     @GET("/iranjith4/ad-assignment/db")
     fun getData(): Flowable<FacilityData>
 
-    @GET("/svc/mostpopular/v2/viewed/{period}.json")
-    fun getNewsForTesting(@Path("period") period: Int, @Query("api-key") key : String): Call<NewsResponse>
-
     companion object {
 
         @get:Synchronized

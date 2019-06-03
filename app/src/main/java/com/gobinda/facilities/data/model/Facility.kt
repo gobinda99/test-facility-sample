@@ -12,7 +12,6 @@ data class Facility(
     var id: String = "",
     var name: String = "",
     @Ignore
-//    @Relation(parentColumn = "id", entityColumn = "facility_id")
     var options: List<Option>? = emptyList(),
     @Transient
     var selected : Boolean = false
@@ -30,14 +29,4 @@ class FacilityImpl(
         return field
     }
 
-//    fun getFacility() : Facility?{
-//        facility?.options = options
-//        return facility
-//    }
-
 }
-
-//fun List<FacilityImpl?>?.toListFacility() : List<Facility?>?{
-//    val facility : MutableList<Facility> = mutableListOf()
-//     return this?.map { it?.facility }
-//}

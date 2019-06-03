@@ -1,32 +1,27 @@
 package com.gobinda.facilities.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gobinda.facilities.R
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ActivityScope
-import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.adapter.NavAdapter
-import dagger.android.support.AndroidSupportInjection
+import com.gobinda.facilities.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.frag_navigation.*
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
 @ActivityScope
-class NavFragment @Inject constructor() : Fragment() {
+class NavFacilityFragment @Inject constructor() : BaseFragment() {
 
-    @Inject
-    lateinit var factory : ViewModelProviderFactory
 
-    val model : FacilitiesViewModel by lazy {
+    private val viewModel : FacilitiesViewModel by lazy {
         ViewModelProviders.of(activity!!, factory).get(FacilitiesViewModel::class.java)
     }
 
@@ -38,10 +33,10 @@ class NavFragment @Inject constructor() : Fragment() {
             Timber.d(it.name) })
 
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+//    override fun onAttach(context: Context) {
+//        AndroidSupportInjection.inject(this)
+//        super.onAttach(context)
+//    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,7 +51,7 @@ class NavFragment @Inject constructor() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        model.mutableLiveData.observe(this, Observer {
+        viewModel.facilities.observe(this, Observer {
             navAdapter.addItem(it,true)
             if(!it.isNullOrEmpty()) {
                 it[0].selected = true
@@ -65,16 +60,6 @@ class NavFragment @Inject constructor() : Fragment() {
             }
         })
     }
-
-    override fun onResume() {
-        super.onResume()
-//        val list = listOf<Facility>( Facility(name = "a"),
-//            Facility(name = "a"),Facility(name = "a"),
-//                Facility(name = "a"),Facility(name = "a"),
-//            Facility(name = "a"),Facility(name = "a"),Facility(name = "a"),
-//            Facility(name = "a"))
-    }
-
 
     private fun setupUiAndListener() {
         with(nav_recycleView) {
@@ -85,7 +70,6 @@ class NavFragment @Inject constructor() : Fragment() {
             /*addItemDecoration(DividerItemDecoration(context,manager.orientation))*/
 
         }
-
 
     }
 

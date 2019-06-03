@@ -1,4 +1,4 @@
-package com.gobinda.facilities
+package com.gobinda.facilities.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -6,18 +6,18 @@ import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.gobinda.facilities.R
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.di.ViewModelProviderFactory
-import com.gobinda.facilities.ui.BaseFragmentActivity
 import com.gobinda.facilities.ui.FacilitiesViewModel
-import com.gobinda.facilities.ui.NavFragment
+import com.gobinda.facilities.ui.NavFacilityFragment
 import com.gobinda.facilities.ui.OptionsFragment
 import com.gobinda.facilities.worker.FacilityWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
+class MainActivity : BaseAppCompatActivity(), NavFacilityFragment.NavItemCallback {
 
     @Inject
     lateinit var factory: ViewModelProviderFactory
@@ -27,7 +27,6 @@ class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -40,9 +39,13 @@ class MainActivity : BaseFragmentActivity(), NavFragment.NavItemCallback {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        WorkManager.getInstance().enqueue(
-            OneTimeWorkRequestBuilder<FacilityWorker>().build()
-        )
+        model.start()
+
+
+//        WorkManager.getInstance().enqueue(
+//            OneTimeWorkRequestBuilder<FacilityWorker>().build()
+//        )
+
 
     }
 

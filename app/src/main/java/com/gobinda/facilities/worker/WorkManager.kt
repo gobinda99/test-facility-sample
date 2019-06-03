@@ -1,21 +1,17 @@
 package com.gobinda.facilities.worker
 
 import androidx.work.*
-import com.gobinda.facilities.SyncWorker
 import java.util.concurrent.TimeUnit
 
 fun createConstraints() = Constraints.Builder()
-    .setRequiredNetworkType(NetworkType.UNMETERED)  // if connected to WIFI
-    // other values(NOT_REQUIRED, CONNECTED, NOT_ROAMING, METERED)
-    .setRequiresBatteryNotLow(true)                 // if the battery is not low
-    .setRequiresStorageNotLow(true)                 // if the storage is not low
+    .setRequiredNetworkType(NetworkType.UNMETERED)
+    .setRequiresBatteryNotLow(true)
+    .setRequiresStorageNotLow(true)
     .build()
 
-fun createWorkRequest(data: Data) = PeriodicWorkRequestBuilder<SyncWorker>(24, TimeUnit.HOURS)  // setting period to 12 hours
-    // set input data for the work
+fun createWorkRequest(data: Data) = PeriodicWorkRequestBuilder<FacilityWorker>(24, TimeUnit.HOURS)  // setting period to 12 hours
     .setInputData(data)
     .setConstraints(createConstraints())
-    // setting a backoff on case the work needs to retry
     .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
     .build()
 

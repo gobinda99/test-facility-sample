@@ -20,9 +20,6 @@ interface  ExclusionsDao {
     @Query("SELECT * FROM exclusions")
     fun loadExclusions(): Single<List<Exclusions>>
 
-    @Query("SELECT * FROM exclusions GROUP BY id")
-    fun loadExclusionsGroupBy(): Single<List<Exclusions>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertExclusions(exclusions : List<Exclusions>) : Completable
 

@@ -1,4 +1,4 @@
-package com.gobinda.facilities.ui
+package com.gobinda.facilities.ui.base
 
 
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import dagger.android.*
 import dagger.android.support.HasSupportFragmentInjector
 import java.util.*
 
-abstract class BaseFragmentActivity : AppCompatActivity(), HasSupportFragmentInjector {
+abstract class BaseAppCompatActivity : AppCompatActivity(), HasSupportFragmentInjector {
 
     @Inject
     lateinit var fragmentInjector : DispatchingAndroidInjector<Fragment>

@@ -9,52 +9,54 @@ import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.data.model.Option
 import com.gobinda.facilities.data.store
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 
-    init {
-        Timber.d("times")
-        setData()
-    }
+    private val disposable = CompositeDisposable()
 
-    val mutableLiveData: MutableLiveData<List<Facility>> = MutableLiveData()
+    val facilities: MutableLiveData<List<Facility>> = MutableLiveData()
 
     private var exclusions: List<List<Exclusions>?>? = null;
 
-    val optionMutableLiveData: MutableLiveData<List<Option>> = MutableLiveData()
+    val optionForVisibleFacility: MutableLiveData<List<Option>> = MutableLiveData()
 
-
-    private fun setData() {
-        data.database.facilityDao().loadFacility()
+    fun start() {
+        disposable.add(data.database.facilityDao().loadFacility()
             .subscribeOn(Schedulers.io()).subscribe({
-                if(it.size <= 0) {}
-                  callData()
+                if(!it.isEmpty()) {
+                    loadFromDB()
+                } else {
+                    api()
+                }
             },{
-                  callApi()
-            })
+                  api()
+                Timber.e(it)
+            }))
     }
 
-    private fun callData() {
-        load(data.database).subscribeOn(Schedulers.io())
+    private fun loadFromDB() {
+        disposable.add(load(data.database).subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread()).subscribe({
-                if(!it.facilities.isNullOrEmpty()) {
-                    mutableLiveData.value = it.facilities
+                if (!it.facilities.isNullOrEmpty()) {
+                    facilities.value = it.facilities
                     exclusions = it.exclusions
                 }
 
-            },{Timber.e(it)})
+            }, { Timber.e(it) })
+        )
     }
 
-    fun callApi() {
-        data.api.getData().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()
-            ).subscribe({
-            store(data.database, it).subscribe({
-                callData()
-            },{Timber.e(it)})
-        }, { Timber.e(it)})
+    private fun api() {
+        disposable.add(data.api.getData().subscribeOn(Schedulers.io())
+            .subscribe({
+                store(data.database, it).subscribe({
+                    loadFromDB()
+                }, { Timber.e(it) })
+            }, { Timber.e(it) })
+        )
 
     }
 
@@ -62,7 +64,7 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 //        data.api.getData().observeOn(AndroidSchedulers.mainThread())
 //            .subscribe({ res ->
 //                exclusions = res.exclusions
-//                mutableLiveData.value = res.facilities
+//                facilities.value = res.facilities
 //                data.database.facilityDao()
 //                    .insertFacilities(res.facilities!!)
 //                    .subscribeOn(Schedulers.io())
@@ -141,17 +143,17 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 //            })
 //    }
 
-    fun getOption(facilityId: String) {
+    fun requestOption(facilityId: String) {
         val selectedOptions: MutableList<Exclusions> = mutableListOf()
-        mutableLiveData.value?.map { fac ->
+        facilities.value?.map { fac ->
             fac.options?.map { opt ->
                 if (opt.selected) {
                     selectedOptions.add(Exclusions(fac.id, opt.id))
-                    Timber.d(" ttt  %s %s %s ", fac.id, opt.id, opt.name)
+                    Timber.d(" Option Selected  %s %s %s ", fac.id, opt.id, opt.name)
                 }
             }
         }
-        val options = mutableLiveData.value?.filter {
+        val options = facilities.value?.filter {
             it.id == facilityId
         }?.firstOrNull()?.options
 
@@ -173,8 +175,13 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
                     }
                 }
         }
-        optionMutableLiveData.value = options
+        optionForVisibleFacility.value = options
 
+    }
+
+    override fun onCleared() {
+        disposable.clear()
+        super.onCleared()
     }
 
 

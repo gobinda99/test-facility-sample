@@ -1,29 +1,23 @@
 package com.gobinda.facilities.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gobinda.facilities.R
 import com.gobinda.facilities.di.ActivityScope
-import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.adapter.OptionsAdapter
-import dagger.android.support.AndroidSupportInjection
+import com.gobinda.facilities.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.frag_navigation.*
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
 @ActivityScope
-class OptionsFragment @Inject constructor() : Fragment() {
-
-    @Inject
-    lateinit var factory : ViewModelProviderFactory
+class OptionsFragment @Inject constructor() : BaseFragment() {
 
     val model : FacilitiesViewModel by lazy {
         ViewModelProviders.of(activity!!, factory).get(FacilitiesViewModel::class.java)
@@ -33,10 +27,6 @@ class OptionsFragment @Inject constructor() : Fragment() {
         ArrayList(0),
         { Timber.d(it.name) })
 
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,8 +41,8 @@ class OptionsFragment @Inject constructor() : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        model.getOption(arguments!!.getString(FACILITY_ID)!!)
-        model.optionMutableLiveData.observe(this, Observer {
+        model.requestOption(arguments!!.getString(FACILITY_ID)!!)
+        model.optionForVisibleFacility.observe(this, Observer {
             navAdapter.addItem(it,true)
         })
     }

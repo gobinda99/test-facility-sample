@@ -44,7 +44,7 @@
         <fragment android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:id="@+id/nav_fragment"
-                  android:name="com.gobinda.facilities.ui.NavFragment"
+                  android:name="com.gobinda.facilities.ui.NavFacilityFragment"
         />
 
     </com.google.android.material.navigation.NavigationView>
