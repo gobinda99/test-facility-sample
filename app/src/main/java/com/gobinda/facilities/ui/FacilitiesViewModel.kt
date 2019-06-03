@@ -8,6 +8,7 @@ import com.gobinda.facilities.data.model.Exclusions
 import com.gobinda.facilities.data.model.Facility
 import com.gobinda.facilities.data.model.Option
 import com.gobinda.facilities.data.store
+import com.gobinda.facilities.util.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,9 +18,12 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 
     private val disposable = CompositeDisposable()
 
-    val facilities: MutableLiveData<List<Facility>> = MutableLiveData()
 
     private var exclusions: List<List<Exclusions>?>? = null;
+
+    val error: MutableLiveData<Event<Throwable>> = MutableLiveData()
+
+    val facilities: MutableLiveData<List<Facility>> = MutableLiveData()
 
     val optionForVisibleFacility: MutableLiveData<List<Option>> = MutableLiveData()
 
@@ -51,97 +55,21 @@ class FacilitiesViewModel(val data: DataSource) : ViewModel() {
 
     private fun api() {
         disposable.add(data.api.getData().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                store(data.database, it).subscribe({
+                store(data.database, it)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
                     loadFromDB()
                 }, { Timber.e(it) })
-            }, { Timber.e(it) })
+            }, {
+                error.value = Event(it)
+                Timber.e(it)
+            })
         )
 
     }
 
-//    private fun callApi() {
-//        data.api.getData().observeOn(AndroidSchedulers.mainThread())
-//            .subscribe({ res ->
-//                exclusions = res.exclusions
-//                facilities.value = res.facilities
-//                data.database.facilityDao()
-//                    .insertFacilities(res.facilities!!)
-//                    .subscribeOn(Schedulers.io())
-//                    .subscribe {
-//                        res.facilities.forEach { fac ->
-//                            fac.options?.map { it.facilityId = fac.id }
-//                            data.database.optionDao().insertOption(fac.options!!)
-//                                .subscribe({
-//                                    // test code of option
-//                                    /* data.database.optionDao()
-//                                         .loadOptions()
-//                                         .subscribe({
-//                                             Timber.d( " Store %s ",it.size)
-//                                         },{})*/
-//                                }, {
-//                                    Timber.e(it)
-//                                })
-//                            // test code of get option with option
-//                            /*data.database.facilityDao().loadFacilityWithOptions()
-//                                .subscribe({
-//                                    val size = it.map { it.facility }
-//                                        .get(0)?.options?.size
-//                                    Timber.d("Store s %s",size)
-//                                },{Timber.e(it)})*/
-//                        }
-//                        res.exclusions?.forEach { list ->
-//                            list?.let {
-//
-//
-//                            }
-//                        }
-//                       /* res.exclusions?.let {
-//                            for (i in 1..it.size) {
-//                                val listEx = it.get(i)
-//                                listEx?.let {
-//                                    it.forEach {
-//                                        it.id = i.toString()
-//                                    }
-//                                    data.database.exclusionsDao().insertExclusions(it)
-//                                        .subscribe({
-//                                            Timber.d("Success")
-//                                            //Insert success
-//                                        }, {
-//                                            Timber.e(it)
-//                                        })
-//                                }
-//                            }
-//
-//                        }*/
-//
-//                        res.exclusions?.forEachIndexed { index, exclusList ->
-//                            exclusList?.forEach { it.id = index.toString() }
-//                            exclusList?.let {
-//                                data.database.exclusionsDao().insertExclusions(it)
-//                                    .subscribe({
-//                                        Timber.d("Success")
-//                                        //Insert success
-//                                    }, {
-//                                        Timber.e(it)
-//                                    })
-//                            }
-//
-//                        }
-//
-//                        data.database.exclusionsDao().loadExclusions()
-//                            .subscribe({
-//                               val exclusions1 : List<List<Exclusions>> =  it.groupBy { it.id }.values.toList()
-//                            }, {
-//                                Timber.e(it)
-//                            })
-//                    }
-//
-//            }, { e ->
-//
-//                Timber.e(e)
-//            })
-//    }
 
     fun requestOption(facilityId: String) {
         val selectedOptions: MutableList<Exclusions> = mutableListOf()

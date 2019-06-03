@@ -3,6 +3,7 @@ package com.gobinda.facilities.ui.base
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -12,6 +13,7 @@ import com.gobinda.facilities.di.ViewModelProviderFactory
 import com.gobinda.facilities.ui.FacilitiesViewModel
 import com.gobinda.facilities.ui.NavFacilityFragment
 import com.gobinda.facilities.ui.OptionsFragment
+import com.gobinda.facilities.util.showSnackBar
 import com.gobinda.facilities.worker.FacilityWorker
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -40,6 +42,12 @@ class MainActivity : BaseAppCompatActivity(), NavFacilityFragment.NavItemCallbac
         toggle.syncState()
 
         model.start()
+
+        model.error.observe(this, Observer {
+            if(! it.isHandled() ){
+                drawer_layout.showSnackBar(getString(R.string.msg_failed_to_refresh), 2000)
+            }
+        })
 
 
 //        WorkManager.getInstance().enqueue(

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"> Exclution </string>
+    <string name="app_name"> Facility </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -7,7 +7,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="image_default_content">Image</string>
-    <string name="msg_failed_to_refresh">Failed to reload, please check internet connection and try to pull to refresh again."</string>
-    <string name="msg_empty_view">Please tap on the screen to reload News also make sure internet is connected before tap.</string>
+    <string name="msg_failed_to_refresh">Failed to reload, please check internet connection and try to launch again."</string>
+    <string name="msg_empty_view">Please tap on the screen to reload data also make sure internet is connected before tap.</string>
 
 </resources>
