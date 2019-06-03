@@ -53,12 +53,7 @@ class NavFacilityAdapter(
     inner class ItemViewHolder(override val containerView: View, private val itemClick: (Facility) -> Unit) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        init {
-//            rightIcon.toIcon(R.string.fa_angle_right)
-        }
-
         fun bind(facility: Facility) {
-            Timber.d(" FF ")
             with(facility) {
                 text_nav.text = facility.name
                 if(selected) {
@@ -75,6 +70,7 @@ class NavFacilityAdapter(
 
     private fun refreshTheItem(facility: Facility) {
         mutableList.map { if(it == facility) {
+            if(!it.selected)
             it.selected = !facility.selected
         } else{
             it.selected = false

@@ -12,7 +12,7 @@ import com.gobinda.facilities.ui.FacilitiesViewModel
 import com.gobinda.facilities.ui.NavFacilityFragment
 import com.gobinda.facilities.ui.OptionsFragment
 import com.gobinda.facilities.util.showSnackBar
-import com.gobinda.facilities.worker.startWorkManagerIfNotInitated
+import com.gobinda.facilities.worker.startWorkManagerIfNotInitiated
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
@@ -47,13 +47,7 @@ class MainActivity : BaseAppCompatActivity(), NavFacilityFragment.NavItemCallbac
             }
         })
 
-        startWorkManagerIfNotInitated()
-
-
-//        WorkManager.getInstance().enqueue(
-//            OneTimeWorkRequestBuilder<FacilityWorker>().build()
-//        )
-
+        startWorkManagerIfNotInitiated()
 
     }
 

@@ -16,7 +16,7 @@ private fun createWorkRequest(data: Data) =
     .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
     .build()
 
-fun startWorkManagerIfNotInitated() {
+fun startWorkManagerIfNotInitiated() {
     val work = createWorkRequest(Data.EMPTY)
     /* enqueue a work, ExistingPeriodicWorkPolicy.KEEP means that if this work already existits, it will be kept
     if the value is ExistingPeriodicWorkPolicy.REPLACE, then the work will be replaced */

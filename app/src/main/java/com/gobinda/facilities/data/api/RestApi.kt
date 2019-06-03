@@ -1,5 +1,6 @@
 package com.gobinda.facilities.data.api
 
+import com.gobinda.facilities.BuildConfig
 import com.google.gson.*
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
@@ -67,7 +68,7 @@ interface RestApi {
 
             adapter = Retrofit.Builder()
                 .client(httpClient)
-                .baseUrl("https://my-json-server.typicode.com")
+                .baseUrl(BuildConfig.API_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(
                     RxJava2CallAdapterFactory
@@ -78,10 +79,6 @@ interface RestApi {
 
 
     }
-
-
-
-
 
 
 
