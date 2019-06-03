@@ -8,8 +8,8 @@ import dagger.android.DispatchingAndroidInjector
 import timber.log.Timber
 import javax.inject.Inject
 import android.app.Activity
+import com.gobinda.facilities.di.AppComponent
 import com.gobinda.facilities.di.DaggerAppComponent
-import com.gobinda.facilities.di.worker.DaggerWorkerFactory
 import dagger.android.HasActivityInjector
 
 
@@ -17,13 +17,12 @@ import dagger.android.HasActivityInjector
  * Application Class
  *
  */
-class App : Application(), HasActivityInjector {
+class App : Application(), HasActivityInjector   {
 
     @Inject
     lateinit var activityInjector: DispatchingAndroidInjector<Activity>
 
-    @Inject
-    lateinit var workerFactory: DaggerWorkerFactory
+    lateinit var appComponent : AppComponent
 
 
     override fun onCreate() {
@@ -33,16 +32,10 @@ class App : Application(), HasActivityInjector {
             Timber.plant(Timber.DebugTree())
         }
 
-
-        DaggerAppComponent.builder()
+       appComponent = DaggerAppComponent.builder()
             .application(this)
-            .build().inject(this)
-
-        WorkManager.initialize(
-            this, Configuration.Builder()
-                .setWorkerFactory(workerFactory).build()
-        )
-
+            .build()
+        appComponent.inject(this)
 
     }
 
